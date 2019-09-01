@@ -169,8 +169,9 @@
 import {
   getList,
   changeStatus,
-  edit
-} from '@/api/service'
+  edit,
+  create
+} from '@/api/product'
 import waves from '@/directive/waves' // waves directive
 import permission from '@/directive/permission'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination

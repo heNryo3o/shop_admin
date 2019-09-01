@@ -19,12 +19,6 @@ const mutations = {
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
   },
-  SET_DUTY: (state, duty) => {
-    state.duty = duty
-  },
-  SET_DEPARTMENT: (state, department) => {
-    state.department = department
-  },
   SET_ROLES: (state, roles) => {
     state.roles = roles
   }
@@ -66,14 +60,14 @@ const actions = {
 	        reject('登录失败，请重新登录！')
 	      }
 
-	      const { username, avatar, duty, department, roles } = data
+	      const { true_name, avatar, duty, department, roles } = data
 
 	      // roles must be a non-empty array
 	      if (!roles || roles.length <= 0) {
 	        reject('您的账号没有设置权限，请联系管理员进行设置！')
 	      }
 
-	      commit('SET_NAME', username)
+	      commit('SET_NAME', true_name)
 	      commit('SET_AVATAR', avatar)
 	      commit('SET_DUTY', duty)
 	      commit('SET_DEPARTMENT', department)

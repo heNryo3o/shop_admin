@@ -18,10 +18,25 @@ export function edit(data) {
   })
 }
 
+export function create(data) {
+  return request({
+    url: model+'/create',
+    method: 'post',
+    data
+  })
+}
+
 export function changeStatus(data) {
   return request({
     url: model+'/change-status',
     method: 'post',
     data
+  })
+}
+
+export function getParentOptions(data) {
+  return request({
+    url: model+'/parent-options',
+    method: 'get',
   })
 }

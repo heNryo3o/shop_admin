@@ -6,7 +6,7 @@
           v-model="listQuery.mobile"
           size="small"
           prefix-icon="el-icon-search"
-          placeholder="输入手机号码搜索"
+          placeholder="输入昵称搜索"
           clearable
           @keyup.enter.native="handleFilter"
         />
@@ -14,16 +14,6 @@
       <el-col :sm="3">
         <el-select v-model="listQuery.status" placeholder="用户状态" size="small" clearable>
           <el-option v-for="item in statusOptions" :key="item.key" :label="item.name" :value="item.key" />
-        </el-select>
-      </el-col>
-      <el-col :sm="3">
-        <el-select v-model="listQuery.prefer" placeholder="用户类型" size="small" clearable>
-          <el-option v-for="item in preferOptions" :key="item.key" :label="item.name" :value="item.key" />
-        </el-select>
-      </el-col>
-      <el-col :sm="3">
-        <el-select v-model="listQuery.vip_level" placeholder="会员等级" size="small" clearable>
-          <el-option v-for="item in vipOptions" :key="item.key" :label="item.name" :value="item.key" />
         </el-select>
       </el-col>
       <el-col :sm="6">
@@ -46,40 +36,19 @@
         <el-button v-waves type="primary" icon="el-icon-search" size="small" @click="handleFilter">
           搜索
         </el-button>
-        <el-button v-waves v-permission="['role/edit-role']" type="success" size="small" icon="el-icon-edit" @click="handleCreate">
-          创建用户
-        </el-button>
       </el-col>
     </el-row>
     <div class="table-container">
       <el-table v-loading="listLoading" :data="list" border fit highlight-current-row size="mini" style="font-size: 14px;">
-        <el-table-column label="手机号码" width="150">
+        <el-table-column label="用户编号" width="150">
           <template slot-scope="{row}">
-            <span class="link-type" @click="handleView(row.id)">{{ row.mobile }}</span>
+            <span class="link-type" @click="handleView(row.id)">{{ row.id }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column label="姓名" width="150">
+        <el-table-column label="昵称" width="150">
           <template slot-scope="{row}">
             <span>{{ row.nickname }}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column label="用户类型" width="150">
-          <template slot-scope="{row}">
-            <span>{{ row.prefer_name }}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column label="会员等级" width="150">
-          <template slot-scope="{row}">
-            <span>{{ row.vip_name }}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column label="渠道来源" width="180">
-          <template slot-scope="{row}">
-            <span>{{ row.canel }}</span>
           </template>
         </el-table-column>
 

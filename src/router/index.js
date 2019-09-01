@@ -60,7 +60,7 @@ export const constantRoutes = [{
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
       meta: {
-        title: '大学士管理后台',
+        title: '江苏乐众管理后台',
         icon: 'dashboard',
         breadcrumb: false
       }
@@ -86,27 +86,11 @@ export const asyncRoutes = [{
         }
       },
       {
-          path: 'user-log',
-          component: () => import('@/views/user/user-log'),
-          name: 'UserLog',
-          meta: {
-            title: '登录注册日志'
-          }
-        },
-      {
-        path: 'validate-person',
-        component: () => import('@/views/user/validate-person'),
-        name: 'ValidatePerson',
+        path: 'user-log',
+        component: () => import('@/views/user/user-log'),
+        name: 'UserLog',
         meta: {
-          title: '个人认证'
-        }
-      },
-      {
-        path: 'validate-company',
-        component: () => import('@/views/user/validate-company'),
-        name: 'ValidateCompany',
-        meta: {
-          title: '企业认证'
+          title: '登录注册日志'
         }
       }
     ]
@@ -115,166 +99,26 @@ export const asyncRoutes = [{
   {
     path: '/store',
     component: Layout,
-    name: 'Task',
+    name: 'Store',
     meta: {
-      title: '店铺管理',
+      title: '商家管理',
       icon: 'store',
       breadcrumb: false
     },
-    children: [
-      {
+    children: [{
         path: 'store-list',
         component: () => import('@/views/store/store-list'),
         name: 'StoreList',
         meta: {
-          title: '店铺列表'
+          title: '商家列表'
         }
       },
       {
-        path: 'service-list',
-        component: () => import('@/views/store/service-list'),
-        name: 'ServiceList',
+        path: 'product-list',
+        component: () => import('@/views/store/product-list'),
+        name: 'ProductList',
         meta: {
-          title: '服务列表'
-        }
-      }
-    ]
-  },
-
-  {
-    path: '/operation',
-    component: Layout,
-    name: 'Operation',
-    meta: {
-      title: '运营相关',
-      icon: 'operation',
-      breadcrumb: false
-    },
-    children: [{
-        path: 'news',
-        component: () => import('@/views/operation/news-list'),
-        name: 'News',
-        meta: {
-          title: '新闻管理',
-          noCache: false,
-        }
-      },
-      {
-        path: 'news-edit/:id(\\d+)',
-        component: () => import('@/views/operation/news-edit'),
-        name: 'NewsEdit',
-        meta: {
-          title: '发布新闻',
-          noCache: false,
-          activeMenu: '/operation/news'
-        },
-        hidden: true
-      },
-      {
-        path: 'case',
-        component: () => import('@/views/operation/case-list'),
-        name: 'Case',
-        meta: {
-          title: '案例管理'
-        }
-      },
-      {
-        path: 'help',
-        component: () => import('@/views/operation/help'),
-        name: 'Help',
-        meta: {
-          title: '帮助中心'
-        }
-      },
-      {
-        path: 'friendly-links',
-        component: () => import('@/views/operation/friendly-links'),
-        name: 'FriendlyLinks',
-        meta: {
-          title: '友情链接'
-        }
-      }
-    ]
-  },
-
-  {
-    path: '/task',
-    component: Layout,
-    name: 'Task',
-    meta: {
-      title: '需求管理',
-      icon: 'task',
-      breadcrumb: false
-    },
-    children: [{
-      path: 'task-list',
-      component: () => import('@/views/task/task-list'),
-      name: 'TaskList',
-      meta: {
-        title: '需求列表'
-      }
-    }]
-  },
-
-  {
-    path: '/offline',
-    component: Layout,
-    name: 'Offline',
-    meta: {
-      title: '线下对接',
-      icon: 'offline',
-      breadcrumb: false
-    },
-    children: [{
-        path: 'offline-list',
-        component: () => import('@/views/offline/offline-list'),
-        name: 'OfflineList',
-        meta: {
-          title: '项目列表'
-        }
-      },
-      {
-        path: 'offline-calculate',
-        component: () => import('@/views/offline/offline-calculate'),
-        name: 'OfflineCalculate',
-        meta: {
-          title: '对接统计'
-        }
-      }
-    ]
-  },
-
-  {
-    path: '/vip',
-    component: Layout,
-    name: 'System',
-    meta: {
-      title: '会员相关',
-      icon: 'vip',
-      breadcrumb: false
-    },
-    children: [{
-        path: 'version',
-        component: () => import('@/views/vip/version'),
-        name: 'version',
-        meta: {
-          title: '会员版本'
-        }
-      },
-      {
-        path: 'offline-order',
-        component: () => import('@/views/vip/offline-order'),
-        name: 'OfflineOrder',
-        meta: {
-          title: '线下订单'
-        }
-      },
-      {
-        path: 'unapprove-order',
-        component: () => import('@/views/vip/unapprove-order'),
-        name: 'UnapproveOrder',
-        meta: {
-          title: '待审核订单'
+          title: '商品列表'
         }
       }
     ]

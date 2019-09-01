@@ -3,10 +3,10 @@
     <el-row class="filter-container" :gutter="10">
       <el-col :sm="4">
         <el-input
-          v-model="listQuery.mobile"
+          v-model="listQuery.nickname"
           size="small"
           prefix-icon="el-icon-search"
-          placeholder="输入手机号码搜索"
+          placeholder="输入昵称搜索"
           clearable
           @keyup.enter.native="handleFilter"
         />
@@ -14,11 +14,6 @@
       <el-col :sm="3">
         <el-select v-model="listQuery.type" placeholder="记录类型" size="small" clearable>
           <el-option v-for="item in typeOptions" :key="item.key" :label="item.name" :value="item.key" />
-        </el-select>
-      </el-col>
-      <el-col :sm="3">
-        <el-select v-model="listQuery.origin" placeholder="使用设备" size="small" clearable>
-          <el-option v-for="item in originOptions" :key="item.key" :label="item.name" :value="item.key" />
         </el-select>
       </el-col>
       <el-col :sm="6">
@@ -63,21 +58,12 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="使用设备" width="150">
-          <template slot-scope="{row}">
-            <span>{{ row.origin }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="ip地址" width="180">
+        <el-table-column label="ip地址" min-width="180" class="fixed-width">
           <template slot-scope="{row}">
             <span>{{ row.ip }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="浏览器" fixed="right" min-width="220" class-name="fixed-width">
-          <template slot-scope="{row}">
-            <span>{{ row.browser }}</span>
-          </template>
-        </el-table-column>
+
       </el-table>
     </div>
 
