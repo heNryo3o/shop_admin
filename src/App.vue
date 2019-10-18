@@ -42,4 +42,12 @@
   .tags-in-table{
     margin-left: 10px;
   }
+
+  .mb-20{
+    margin-bottom: 20px;
+  }
+  
+  .mb-30{
+    margin-bottom: 30px;
+  }
 </style>
