@@ -9,3 +9,18 @@ export function fileList(data) {
     params: data
   })
 }
+
+export function getInfo() {
+  return request({
+    url: '/system/info',
+    method: 'get'
+  })
+}
+
+export function saveBanner(data) {
+  return request({
+    url: '/system/save-banner',
+    method: 'post',
+    data
+  })
+}

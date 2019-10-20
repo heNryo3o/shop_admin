@@ -50,4 +50,8 @@
   .mb-30{
     margin-bottom: 30px;
   }
+  
+  .el-drawer__body{
+    overflow-y: scroll;
+  }
 </style>

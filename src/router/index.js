@@ -210,6 +210,14 @@ export const asyncRoutes = [{
         }
       },
       {
+        path: 'banner',
+        component: () => import('@/views/system/banner'),
+        name: 'Banner',
+        meta: {
+          title: '首页banner'
+        }
+      },
+      {
         path: 'areas',
         component: () => import('@/views/system/areas'),
         name: 'Roles',

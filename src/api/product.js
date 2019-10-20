@@ -34,6 +34,14 @@ export function changeStatus(data) {
   })
 }
 
+export function setDapai(data) {
+  return request({
+    url: model + '/set-dapai',
+    method: 'post',
+    data
+  })
+}
+
 export function destroy(data) {
   return request({
     url: model + '/destroy',

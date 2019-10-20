@@ -32,7 +32,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="分类" width="150">
+        <el-table-column label="分类" width="250">
           <template slot-scope="{row}">
             <span>{{ row.category_name }}</span>
           </template>
@@ -81,12 +81,12 @@
 
     <store-info :store-id="storeId" :info-visible.sync="storeInfoVisible" />
 
-    <el-dialog title="审核信息" width="800px" :visible.sync="storeAuditVisible">
+    <el-dialog title="审核信息" width="950px" :visible.sync="storeAuditVisible">
       <div class="preview-container">
-        <div class="licence-pic">
-          <el-image :src="temp.licence" fit="contain" />
-          <el-image :src="temp.id_card" fit="contain" />
-          <el-image :src="temp.id_card_back" fit="contain" />
+        <div class="licence-pic" style="margin-bottom: 20px;">
+          <el-image :src="temp.licence" fit="contain" style="width: 250px;max-height: 500px;margin-left: 20px;" />
+          <el-image :src="temp.id_card" fit="contain" style="width: 250px;max-height: 500px;margin-left: 20px;" />
+          <el-image :src="temp.id_card_back" fit="contain" style="width: 250px;max-height: 500px;" />
         </div>
         <p>
           商家名称: {{ temp.name }}

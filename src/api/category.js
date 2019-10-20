@@ -10,6 +10,14 @@ export function getList(data) {
   })
 }
 
+export function getSubCategory(data) {
+  return request({
+    url: model+'/sub-options',
+    method: 'get',
+    params: data
+  })
+}
+
 export function edit(data) {
   return request({
     url: model+'/edit',

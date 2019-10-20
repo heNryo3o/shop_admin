@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-drawer title="用户信息" size="65%" :visible.sync="infoVisible" :before-close="handleClose" @open="handleOpen">
+    <el-drawer title="店铺信息" size="65%" :visible.sync="infoVisible" :before-close="handleClose" @open="handleOpen">
       <el-card class="box-card user-wrapper">
         <div>
           <el-card class="box-card mb-30" shadow="hover">
@@ -69,6 +69,7 @@
   .user-wrapper {
     width: 94%;
     margin: auto;
+    font-size: 15px;
   }
 
   .id-card-image {
