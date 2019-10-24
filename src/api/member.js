@@ -57,3 +57,19 @@ export function getLogs(data) {
     params: data
   })
 }
+
+export function pushers(data) {
+  return request({
+    url: model+'/pushers',
+    method: 'get',
+    params: data
+  })
+}
+
+export function pusherAdd(data) {
+  return request({
+    url: model+'/pusher-add',
+    method: 'post',
+    data
+  })
+}

@@ -86,11 +86,11 @@ export const asyncRoutes = [{
         }
       },
       {
-        path: 'user-log',
-        component: () => import('@/views/user/user-log'),
-        name: 'UserLog',
+        path: 'pusher',
+        component: () => import('@/views/user/pusher'),
+        name: 'Pusher',
         meta: {
-          title: '登录注册日志'
+          title: '后台添加推手'
         }
       }
     ]
@@ -191,7 +191,27 @@ export const asyncRoutes = [{
       },
     ]
   },
-
+  {
+    path: '/account',
+    component: Layout,
+    name: 'Account',
+    meta: {
+      title: '财务管理',
+      icon: 'account',
+      breadcrumb: false,
+      roles: ['account/worker-deposit','account/worker-withdraw','account/user-deposit','account/success-order']
+    },
+    children: [{
+        path: 'pay-log',
+        component: () => import('@/views/account/pay-log'),
+        name: 'PayLog',
+        meta: {
+          roles: ['account/pay-log'],
+          title: '付款流水'
+        }
+      }
+    ]
+  },
   {
     path: '/system',
     component: Layout,
@@ -207,14 +227,6 @@ export const asyncRoutes = [{
         name: 'Base',
         meta: {
           title: '基本设置'
-        }
-      },
-      {
-        path: 'banner',
-        component: () => import('@/views/system/banner'),
-        name: 'Banner',
-        meta: {
-          title: '首页banner'
         }
       },
       {

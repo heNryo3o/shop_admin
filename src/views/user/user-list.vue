@@ -2,14 +2,8 @@
   <div class="app-container">
     <el-row class="filter-container" :gutter="10">
       <el-col :sm="4">
-        <el-input
-          v-model="listQuery.mobile"
-          size="small"
-          prefix-icon="el-icon-search"
-          placeholder="输入昵称搜索"
-          clearable
-          @keyup.enter.native="handleFilter"
-        />
+        <el-input v-model="listQuery.mobile" size="small" prefix-icon="el-icon-search" placeholder="输入昵称搜索" clearable
+          @keyup.enter.native="handleFilter" />
       </el-col>
       <el-col :sm="3">
         <el-select v-model="listQuery.status" placeholder="用户状态" size="small" clearable>
@@ -17,20 +11,9 @@
         </el-select>
       </el-col>
       <el-col :sm="6">
-        <el-date-picker
-          v-model="listQuery.date_range"
-          type="daterange"
-          align="right"
-          size="small"
-          unlink-panels
-          range-separator="-"
-          start-placeholder="注册开始日期"
-          end-placeholder="注册结束日期"
-          :picker-options="pickerOptions"
-          value-format="yyyy-MM-dd"
-          format="yyyy年 MM月 dd日"
-          style="width: 100%;"
-        />
+        <el-date-picker v-model="listQuery.date_range" type="daterange" align="right" size="small" unlink-panels
+          range-separator="-" start-placeholder="注册开始日期" end-placeholder="注册结束日期" :picker-options="pickerOptions"
+          value-format="yyyy-MM-dd" format="yyyy年 MM月 dd日" style="width: 100%;" />
       </el-col>
       <el-col :sm="5">
         <el-button v-waves type="primary" icon="el-icon-search" size="small" @click="handleFilter">
@@ -58,6 +41,12 @@
           </template>
         </el-table-column>
 
+        <el-table-column label="是否是推手" width="120">
+          <template slot-scope="{row}">
+            <span>{{ row.is_pusher == 1 ? '已成为推手' : '不是推手' }}</span>
+          </template>
+        </el-table-column>
+
         <el-table-column label="用户状态" width="120">
           <template slot-scope="{row}">
             <el-tag :type="row.status == 1 ? '' : 'danger'" size="small"><span>{{ row.status == 1 ? '正常' : '禁止登录' }}</span></el-tag>
@@ -69,14 +58,8 @@
             <el-button v-waves v-permission="['role/edit-role']" type="primary" size="mini" @click="handleUpdate(row)">
               编辑
             </el-button>
-            <el-button
-              v-if="row.status == 1"
-              v-waves
-              v-permission="['role/change-status']"
-              size="mini"
-              type="warning"
-              @click="handleChangeStatus(row,2)"
-            >
+            <el-button v-if="row.status == 1" v-waves v-permission="['role/change-status']" size="mini" type="warning"
+              @click="handleChangeStatus(row,2)">
               禁用
             </el-button>
             <el-button v-else v-waves v-permission="['role/change-status']" size="mini" type="success" @click="handleChangeStatus(row,1)">
@@ -135,219 +118,219 @@
 </template>
 
 <script>
-import {
-  getList,
-  changeStatus,
-  edit
-} from '@/api/member'
-import waves from '@/directive/waves' // waves directive
-import permission from '@/directive/permission'
-import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import UserInfo from '@/components/User/UserInfo'
+  import {
+    getList,
+    changeStatus,
+    edit
+  } from '@/api/member'
+  import waves from '@/directive/waves' // waves directive
+  import permission from '@/directive/permission'
+  import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+  import UserInfo from '@/components/User/UserInfo'
 
-export default {
-  components: {
-    Pagination,
-    UserInfo
-  },
-  directives: {
-    waves,
-    permission
-  },
-  data() {
-    return {
-      pickerOptions: {
-        shortcuts: [{
-          text: '最近一周',
-          onClick(picker) {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-            picker.$emit('pick', [start, end])
-          }
-        }, {
-          text: '最近一个月',
-          onClick(picker) {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-            picker.$emit('pick', [start, end])
-          }
-        }, {
-          text: '最近三个月',
-          onClick(picker) {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-            picker.$emit('pick', [start, end])
-          }
-        }]
-      },
-      statusOptions: [{
-        name: '正常',
-        key: 1
-      },
-      {
-        name: '禁止登录',
-        key: 2
-      }
-      ],
-      vipOptions: [{
-        name: '普通用户',
-        key: 0
-      },
-      {
-        name: '基础店',
-        key: 1
-      }, {
-        name: '黄金店',
-        key: 2
-      }, {
-        name: '钻石店',
-        key: 3
-      }, {
-        name: '皇冠店',
-        key: 4
-      }
-      ],
-      preferOptions: [{
-        name: '解决方',
-        key: 1
-      },
-      {
-        name: '需求方',
-        key: 2
-      },
-      {
-        name: '未确认',
-        key: 3
-      }
-      ],
-      dialogFormVisible: false,
-      dialogStatus: '',
-      textMap: {
-        update: '修改密码',
-        create: '新增用户'
-      },
-      list: [],
-      total: 0,
-      listLoading: true,
-      listQuery: {
-        page: 1,
-        limit: 10,
-        sort: '-id'
-      },
-      infoVisible: false,
-      temp: {},
-      userId: 0
-    }
-  },
-  created() {
-    this.getList()
-  },
-
-  methods: {
-    sortChange(data) {
-      const {
-        prop,
-        order
-      } = data
-      if (order === 'ascending') {
-        this.listQuery.sort = '+' + prop
-      } else {
-        this.listQuery.sort = '-' + prop
-      }
-      this.handleFilter()
+  export default {
+    components: {
+      Pagination,
+      UserInfo
     },
-    getList() {
-      this.listLoading = true
-      getList(this.listQuery).then(response => {
-        this.list = response.data.list
-        this.total = response.data.total
-        this.listLoading = false
-      })
+    directives: {
+      waves,
+      permission
     },
-
-    handleFilter() {
-      this.listQuery.page = 1
+    data() {
+      return {
+        pickerOptions: {
+          shortcuts: [{
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+              picker.$emit('pick', [start, end])
+            }
+          }]
+        },
+        statusOptions: [{
+            name: '正常',
+            key: 1
+          },
+          {
+            name: '禁止登录',
+            key: 2
+          }
+        ],
+        vipOptions: [{
+            name: '普通用户',
+            key: 0
+          },
+          {
+            name: '基础店',
+            key: 1
+          }, {
+            name: '黄金店',
+            key: 2
+          }, {
+            name: '钻石店',
+            key: 3
+          }, {
+            name: '皇冠店',
+            key: 4
+          }
+        ],
+        preferOptions: [{
+            name: '解决方',
+            key: 1
+          },
+          {
+            name: '需求方',
+            key: 2
+          },
+          {
+            name: '未确认',
+            key: 3
+          }
+        ],
+        dialogFormVisible: false,
+        dialogStatus: '',
+        textMap: {
+          update: '修改密码',
+          create: '新增用户'
+        },
+        list: [],
+        total: 0,
+        listLoading: true,
+        listQuery: {
+          page: 1,
+          limit: 10,
+          sort: '-id'
+        },
+        infoVisible: false,
+        temp: {},
+        userId: 0
+      }
+    },
+    created() {
       this.getList()
     },
 
-    handleCreate() {
-      this.resetTemp()
-      this.dialogStatus = 'create'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-
-      })
-    },
-
-    handleView(id) {
-      this.userId = id
-      this.infoVisible = true
-    },
-
-    handleUpdate(row) {
-      this.temp = {
-        id: row.id,
-        nickname: row.nickname,
-        mobile: row.mobile,
-        password: '',
-        status: row.status === 1 ? '1' : '2',
-        prefer: row.prefer
-      }
-      this.dialogStatus = 'update'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-
-      })
-    },
-
-    updateData() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          edit(this.temp).then(response => {
-            this.getList()
-            this.dialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '保存用户信息成功',
-              type: 'success',
-              duration: 2000
-            })
-          })
+    methods: {
+      sortChange(data) {
+        const {
+          prop,
+          order
+        } = data
+        if (order === 'ascending') {
+          this.listQuery.sort = '+' + prop
+        } else {
+          this.listQuery.sort = '-' + prop
         }
-      })
-    },
-
-    resetTemp() {
-      this.temp = {
-        id: 0,
-        status: '1',
-        password: '',
-        nickname: '',
-        mobile: '',
-        prefer: 3
-      }
-    },
-
-    handleChangeStatus(row, status) {
-      var message = status === 1 ? '用户启用成功' : '用户禁用成功'
-      changeStatus({
-        id: row.id,
-        status: status
-      }).then(response => {
-        this.$notify({
-          title: '成功',
-          message: message,
-          type: 'success',
-          duration: 2000
+        this.handleFilter()
+      },
+      getList() {
+        this.listLoading = true
+        getList(this.listQuery).then(response => {
+          this.list = response.data.list
+          this.total = response.data.total
+          this.listLoading = false
         })
+      },
+
+      handleFilter() {
+        this.listQuery.page = 1
         this.getList()
-      })
+      },
+
+      handleCreate() {
+        this.resetTemp()
+        this.dialogStatus = 'create'
+        this.dialogFormVisible = true
+        this.$nextTick(() => {
+
+        })
+      },
+
+      handleView(id) {
+        this.userId = id
+        this.infoVisible = true
+      },
+
+      handleUpdate(row) {
+        this.temp = {
+          id: row.id,
+          nickname: row.nickname,
+          mobile: row.mobile,
+          password: '',
+          status: row.status === 1 ? '1' : '2',
+          prefer: row.prefer
+        }
+        this.dialogStatus = 'update'
+        this.dialogFormVisible = true
+        this.$nextTick(() => {
+
+        })
+      },
+
+      updateData() {
+        this.$refs['dataForm'].validate((valid) => {
+          if (valid) {
+            edit(this.temp).then(response => {
+              this.getList()
+              this.dialogFormVisible = false
+              this.$notify({
+                title: '成功',
+                message: '保存用户信息成功',
+                type: 'success',
+                duration: 2000
+              })
+            })
+          }
+        })
+      },
+
+      resetTemp() {
+        this.temp = {
+          id: 0,
+          status: '1',
+          password: '',
+          nickname: '',
+          mobile: '',
+          prefer: 3
+        }
+      },
+
+      handleChangeStatus(row, status) {
+        var message = status === 1 ? '用户启用成功' : '用户禁用成功'
+        changeStatus({
+          id: row.id,
+          status: status
+        }).then(response => {
+          this.$notify({
+            title: '成功',
+            message: message,
+            type: 'success',
+            duration: 2000
+          })
+          this.getList()
+        })
+      }
     }
   }
-}
 </script>
 
 <style lang="scss">
