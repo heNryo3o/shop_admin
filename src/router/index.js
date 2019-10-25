@@ -6,30 +6,6 @@ Vue.use(Router)
 /* Layout */
 import Layout from '@/layout'
 
-/**
- * Note: sub-menu only appear when route children.length >= 1
- * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
- *
- * hidden: true                   if set true, item will not show in the sidebar(default is false)
- * alwaysShow: true               if set true, will always show the root menu
- *                                if not set alwaysShow, when item has more than one children route,
- *                                it will becomes nested mode, otherwise not show the root menu
- * redirect: noRedirect           if set noRedirect will no redirect in the breadcrumb
- * name:'router-name'             the name is used by <keep-alive> (must set!!!)
- * meta : {
-    roles: ['admin','editor']    control the page roles (you can set multiple roles)
-    title: 'title'               the name show in sidebar and breadcrumb (recommend set)
-    icon: 'svg-name'             the icon show in the sidebar
-    breadcrumb: false            if set false, the item will hidden in breadcrumb(default is true)
-    activeMenu: '/example/list'  if set path, the sidebar will highlight the path you set
-  }
- */
-
-/**
- * constantRoutes
- * a base page that does not have permission requirements
- * all roles can be accessed
- */
 export const constantRoutes = [{
     path: '/redirect',
     component: Layout,
@@ -123,6 +99,54 @@ export const asyncRoutes = [{
       }
     ]
   },
+  {
+    path: '/account',
+    component: Layout,
+    name: 'Account',
+    meta: {
+      title: '财务管理',
+      icon: 'account',
+      breadcrumb: false,
+      roles: ['account/worker-deposit', 'account/worker-withdraw', 'account/user-deposit', 'account/success-order']
+    },
+    children: [{
+        path: 'pay-log',
+        component: () => import('@/views/account/pay-log'),
+        name: 'PayLog',
+        meta: {
+          roles: ['account/pay-log'],
+          title: '付款流水'
+        }
+      },
+      {
+        path: 'order-list',
+        component: () => import('@/views/account/order-list'),
+        name: 'OrderList',
+        meta: {
+          roles: ['account/order-list'],
+          title: '订单列表'
+        }
+      },
+      {
+        path: 'pusher-cash',
+        component: () => import('@/views/account/pusher-cash'),
+        name: 'PusherCash',
+        meta: {
+          roles: ['account/pusher-cash'],
+          title: '推手提现'
+        }
+      },
+      {
+        path: 'store-cash',
+        component: () => import('@/views/account/store-cash'),
+        name: 'StoreCash',
+        meta: {
+          roles: ['account/store-cash'],
+          title: '商家提现'
+        }
+      }
+    ]
+  },
 
   {
     path: '/admin',
@@ -163,55 +187,6 @@ export const asyncRoutes = [{
       }
     ]
   },
-
-  {
-    path: '/push',
-    component: Layout,
-    name: 'Push',
-    meta: {
-      title: '消息通知',
-      icon: 'message',
-      breadcrumb: false
-    },
-    children: [{
-        path: 'template-list',
-        component: () => import('@/views/push/template-list'),
-        name: 'TemplateList',
-        meta: {
-          title: '消息模版'
-        }
-      },
-      {
-        path: 'push-logs',
-        component: () => import('@/views/push/push-logs'),
-        name: 'PushLogs',
-        meta: {
-          title: '推送日志'
-        }
-      },
-    ]
-  },
-  {
-    path: '/account',
-    component: Layout,
-    name: 'Account',
-    meta: {
-      title: '财务管理',
-      icon: 'account',
-      breadcrumb: false,
-      roles: ['account/worker-deposit','account/worker-withdraw','account/user-deposit','account/success-order']
-    },
-    children: [{
-        path: 'pay-log',
-        component: () => import('@/views/account/pay-log'),
-        name: 'PayLog',
-        meta: {
-          roles: ['account/pay-log'],
-          title: '付款流水'
-        }
-      }
-    ]
-  },
   {
     path: '/system',
     component: Layout,
@@ -230,27 +205,11 @@ export const asyncRoutes = [{
         }
       },
       {
-        path: 'areas',
-        component: () => import('@/views/system/areas'),
-        name: 'Roles',
-        meta: {
-          title: '地区管理'
-        }
-      },
-      {
         path: 'category',
         component: () => import('@/views/system/category'),
         name: 'Category',
         meta: {
           title: '分类管理'
-        }
-      },
-      {
-        path: 'file',
-        component: () => import('@/views/system/file'),
-        name: 'File',
-        meta: {
-          title: '文件上传记录'
         }
       }
     ]

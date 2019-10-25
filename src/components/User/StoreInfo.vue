@@ -24,7 +24,6 @@
             <el-row :gutter="10" class="mb-20">
               <el-col :sm="8"><span class="info-label">账户金额：</span>{{ info.money }}</el-col>
               <el-col :sm="8"><span class="info-label">提现待审核金额：</span>{{ info.money_block }}</el-col>
-              <el-col :sm="8"><span class="info-label">冻结不可提现金额：</span>{{ info.money_hold }}</el-col>
             </el-row>
           </el-card>
         </div>

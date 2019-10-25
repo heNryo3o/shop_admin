@@ -9,3 +9,35 @@ export function payLog(data) {
     params: data
   })
 }
+
+export function pusherCashIndex(data) {
+  return request({
+    url: model + '/pusher-cash-index',
+    method: 'get',
+    params: data
+  })
+}
+
+export function pusherCashAudit(data) {
+  return request({
+    url: model + '/pusher-cash-audit',
+    method: 'post',
+    data
+  })
+}
+
+export function storeCashIndex(data) {
+  return request({
+    url: model + '/store-cash-index',
+    method: 'get',
+    params: data
+  })
+}
+
+export function storeCashAudit(data) {
+  return request({
+    url: model + '/store-cash-audit',
+    method: 'post',
+    data
+  })
+}

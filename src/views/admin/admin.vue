@@ -6,7 +6,7 @@
           v-model="listQuery.username"
           size="medium"
           prefix-icon="el-icon-search"
-          placeholder="输入手机号搜索"
+          placeholder="输入管理员姓名搜索"
           clearable
           @keyup.enter.native="handleFilter"
         />
@@ -16,7 +16,7 @@
           v-model="listQuery.username"
           size="medium"
           prefix-icon="el-icon-search"
-          placeholder="输入管理员姓名搜索"
+          placeholder="输入手机号码搜索"
           clearable
           @keyup.enter.native="handleFilter"
         />
@@ -35,7 +35,7 @@
         <el-button v-waves type="primary" size="medium" icon="el-icon-search" @click="handleFilter">
           搜索
         </el-button>
-        <el-button v-waves v-permission="['admin/edit-admin']" size="medium" type="success" icon="el-icon-edit" @click="handleCreate">
+        <el-button v-waves v-permission="['admin/create']" size="medium" type="success" icon="el-icon-edit" @click="handleCreate">
           新增管理员
         </el-button>
       </el-col>
@@ -52,14 +52,14 @@
         style="font-size: 14px;"
         @sort-change="sortChange"
       >
-        <el-table-column label="手机号码" width="180">
-          <template slot-scope="{row}">
-            <span>{{ row.username }}</span>
-          </template>
-        </el-table-column>
         <el-table-column label="姓名" width="150">
           <template slot-scope="{row}">
             <span>{{ row.true_name }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="手机号码" width="150">
+          <template slot-scope="{row}">
+            {{ row.username }}
           </template>
         </el-table-column>
         <el-table-column label="角色" width="200">
@@ -84,7 +84,7 @@
         </el-table-column>
         <el-table-column label="操作" fixed="right" min-width="200" class-name="small-padding fixed-width">
           <template slot-scope="{row}">
-            <el-button v-waves v-permission="['admin/edit-admin']" type="primary" size="mini" @click="handleUpdate(row)">
+            <el-button v-waves v-permission="['admin/edit']" type="primary" size="mini" @click="handleUpdate(row)">
               编辑
             </el-button>
 
@@ -111,7 +111,7 @@
     <el-dialog :title="textMap[dialogStatus]" width="700px" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 400px; margin-left:50px;">
 
-        <el-form-item label="姓名" prop="true_name">
+        <el-form-item label="管理员姓名" prop="true_name">
           <el-input v-model="temp.true_name" />
         </el-form-item>
 
@@ -130,12 +130,9 @@
 
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 400px; margin-left:50px;">
         <el-form-item label="所属角色">
-          <el-select v-model="temp.roles_id" multiple placeholder="请选择" style="width: 400px;" @change="handleRoleChange(temp)">
+          <el-select v-model="temp.roles_id" multiple placeholder="请选择" style="width: 400px;">
             <el-option v-for="item in roleOptions" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
-        </el-form-item>
-        <el-form-item label="拥有权限">
-          <el-tree ref="tree" v-model="temp.permissions" :data="permissionOptions" show-checkbox node-key="value" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer" align="center">
@@ -155,15 +152,12 @@ import {
   getList,
   edit,
   create,
-  changeStatus,
-  getAdminPermissions
+  changeStatus
 } from '@/api/admin'
 import {
   getRoleOptions
 } from '@/api/role'
-import {
-  getPermissionOptions
-} from '@/api/permission'
+
 import waves from '@/directive/waves' // waves directive
 import permission from '@/directive/permission' // permission directive
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -187,6 +181,8 @@ export default {
         limit: 10,
         sort: '-id'
       },
+      multipleSelection: [],
+      departmentOptions: [],
       roleOptions: [],
       statusOptions: [{
         name: '在职中',
@@ -197,8 +193,11 @@ export default {
         key: 2
       }
       ],
+
+      showReviewer: false,
       temp: {},
       dialogFormVisible: false,
+      permissionDialogVisble: false,
       dialogStatus: '',
       textMap: {
         update: '编辑管理员',
@@ -235,21 +234,6 @@ export default {
         this.roleOptions = response.data.options
       })
     },
-    getPermissionOptions() {
-      getPermissionOptions().then(response => {
-        this.permissionOptions = response.data.options
-      })
-    },
-    handleRoleChange() {
-      getAdminPermissions({
-        id: this.temp.id,
-        roles: this.temp.roles_id
-      }).then(response => {
-        this.temp.permissions = response.data.permissions
-        this.$refs.tree.setCheckedKeys(response.data.permissions)
-      })
-    },
-
     getList() {
       this.listLoading = true
       getList(this.listQuery).then(response => {
@@ -272,7 +256,6 @@ export default {
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
       this.$nextTick(() => {
-        this.$refs.tree.setCheckedKeys([])
         this.$refs['dataForm'].clearValidate()
       })
     },
@@ -282,12 +265,10 @@ export default {
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
-        this.$refs.tree.setCheckedKeys(row.permissions)
         this.$refs['dataForm'].clearValidate()
       })
     },
     updateData() {
-      this.temp.permissions = this.$refs.tree.getCheckedKeys()
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           if (this.temp.id > 0) {
