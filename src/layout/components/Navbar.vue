@@ -83,7 +83,8 @@
   import Screenfull from '@/components/Screenfull'
   import Search from '@/components/HeaderSearch'
   import {
-    edit,changePassword
+    edit,
+    changePassword
   } from '@/api/user'
   import store from '@/store'
 
@@ -115,7 +116,9 @@
     },
     methods: {
       updatePassword() {
-        changePassword({password: this.password}).then(response => {
+        changePassword({
+          password: this.password
+        }).then(response => {
           this.$notify({
             title: '成功',
             message: '修改密码成功',
@@ -126,7 +129,7 @@
         })
       },
       showPassword() {
-         this.editPassword = true
+        this.editPassword = true
       },
       showEdit() {
         console.log(1)
