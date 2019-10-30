@@ -19,9 +19,6 @@
         <el-button v-waves type="primary" icon="el-icon-search" size="small" @click="handleFilter">
           搜索
         </el-button>
-        <el-button v-waves v-permission="['role/edit-role']" type="success" size="small" icon="el-icon-edit" @click="handleCreate">
-          创建用户
-        </el-button>
       </el-col>
     </el-row>
     <div class="table-container">
