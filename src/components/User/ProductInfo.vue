@@ -66,6 +66,7 @@
                     </el-form-item>
                     <el-form-item label="价格：" label-width="100px">
                       <el-input v-model="item.price" placeholder="请填写价格" style="width: 300px;" />
+                      <span>元</span>
                     </el-form-item>
                     <el-form-item label="剩余库存：" v-if="isOnline == 1" label-width="100px">
                       <el-input v-model="item.stock" placeholder="请填写剩余库存数量" style="width: 300px;" />
@@ -140,8 +141,13 @@
         this.info.thumb = res.data.preview_url
         this.thumb = res.data.preview_url
       },
-      beforeUpload() {
+      beforeUpload(file) {
+        const isLt2M = file.size / 1024 / 1024 < 2
 
+        if (!isLt2M) {
+          this.$message.error('上传图片大小不能超过 2MB!')
+        }
+        return isLt2M
       },
       handlePreview(url) {
         this.previewImageUrl = url
