@@ -90,7 +90,7 @@
         <el-form-item label="分类名称">
           <el-input v-model="temp.name" placeholder="请填写分类名称" />
         </el-form-item>
-        <el-form-item label="缩略图">
+        <el-form-item label="缩略图(1:1)">
           <el-upload
             class="avatar-uploader"
             v-model="temp.thumb"

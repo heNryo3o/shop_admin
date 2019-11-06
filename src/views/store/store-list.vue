@@ -22,28 +22,34 @@
       </el-col>
     </el-row>
     <div class="table-container">
+
       <el-table v-loading="listLoading" :data="list" border fit highlight-current-row size="mini" style="font-size: 14px;">
+        <el-table-column label="编号" width="100">
+          <template slot-scope="{row}">
+            <span>{{ row.id }}</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column label="商家名称" width="130">
+          <template slot-scope="{row}">
+            <span>{{ row.name }}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="手机号码" width="150">
           <template slot-scope="{row}">
             <span class="link-type" @click="handleViewStore(row.id)">{{ row.mobile }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column label="分类" width="250">
+        <el-table-column label="分类" width="120">
           <template slot-scope="{row}">
             <span>{{ row.category_name }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column label="地区" width="300">
+        <el-table-column label="地区" width="200">
           <template slot-scope="{row}">
             <span>{{ row.area_name }} {{row.address}}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column label="申请时间" width="180">
-          <template slot-scope="{row}">
-            <span>{{ row.created_at }}</span>
           </template>
         </el-table-column>
 
@@ -53,10 +59,19 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" fixed="right" min-width="230" class-name="small-padding fixed-width">
+        <el-table-column label="申请时间" width="180">
+          <template slot-scope="{row}">
+            <span>{{ row.created_at }}</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column label="操作" fixed="right" min-width="280" class-name="small-padding fixed-width">
           <template slot-scope="{row}">
             <el-button v-waves v-permission="['role/edit-role']" type="primary" size="mini" @click="handleViewStore(row.id)">
               查看
+            </el-button>
+            <el-button v-waves v-permission="['role/edit-role']" type="warning" size="mini" @click="handleEditStore(row.id)">
+              编辑
             </el-button>
             <el-button v-waves type="success" size="mini" @click="dealAudit(row)">
               审核信息
@@ -77,6 +92,8 @@
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
     <store-info :store-id="storeId" :info-visible.sync="storeInfoVisible" />
+
+    <store-edit :store-id="storeId" :info-visible.sync="storeEditVisible" @getList="getList()" />
 
     <el-dialog title="审核信息" width="950px" :visible.sync="storeAuditVisible">
       <div class="preview-container">
@@ -127,11 +144,13 @@
   import permission from '@/directive/permission'
   import Pagination from '@/components/Pagination' // secondary package based on el-pagination
   import StoreInfo from '@/components/User/StoreInfo'
+  import StoreEdit from '@/components/User/StoreEdit'
 
   export default {
     components: {
       Pagination,
-      StoreInfo
+      StoreInfo,
+      StoreEdit
     },
     directives: {
       waves,
@@ -200,6 +219,7 @@
           sort: '-id'
         },
         infoVisible: false,
+        storeEditVisible: false,
         temp: {},
         userId: 0
       }
@@ -209,6 +229,10 @@
     },
 
     methods: {
+      handleEditStore(id) {
+        this.storeId = id
+        this.storeEditVisible = true
+      },
       handleViewStore(id) {
         this.storeId = id
         this.storeInfoVisible = true

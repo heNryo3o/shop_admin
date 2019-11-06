@@ -23,6 +23,12 @@
     </el-row>
     <div class="table-container">
       <el-table v-loading="listLoading" :data="list" border fit highlight-current-row size="mini" style="font-size: 14px;">
+        
+        <el-table-column label="编号" width="100">
+          <template slot-scope="{row}">
+            <span>{{ row.id }}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="商品名称" width="210">
           <template slot-scope="{row}">
             <span class="link-type" @click="handleViewProduct(row)">{{ row.name }}</span>

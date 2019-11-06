@@ -46,5 +46,6 @@ export function getParentOptions(data) {
   return request({
     url: model+'/parent-options',
     method: 'get',
+    params: data
   })
 }
